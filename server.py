@@ -3,7 +3,7 @@ from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("arxiv")
 
-_client = arxiv.Client(page_size=10, delay_seconds=3, num_retries=3)
+_client = arxiv.Client(page_size=10, delay_seconds=60, num_retries=3)
 
 
 @mcp.tool()
@@ -49,7 +49,7 @@ def get_paper(paper_id: str) -> str:
     results = list(_client.results(arxiv.Search(id_list=[paper_id])))
 
     if not results:
-        return f"No paper found with ID: {paper_id}"
+        return f"ArXiv search succeeded, but found 0 results for ID '{paper_id}'"
 
     r = results[0]
     authors = ", ".join(a.name for a in r.authors)
@@ -61,12 +61,6 @@ def get_paper(paper_id: str) -> str:
         f"PDF: {r.pdf_url}\n"
         f"Abstract:\n{r.summary.strip()}"
     )
-
-
-@mcp.tool()
-def ping() -> str:
-    """A simple tool to check if the server is responsive."""
-    return "pong"
 
 
 if __name__ == "__main__":
