@@ -39,6 +39,30 @@ def search_papers(query: str, max_results: int = 5) -> str:
     return "\n".join(lines)
 
 
+@mcp.resource("arxiv://{paper_id}")
+def get_paper(paper_id: str) -> str:
+    """Return the abstract and metadata for a specific paper by its arXiv ID, e.g. "2205.15836"
+
+    Args:
+        paper_id (str): arXiv ID
+    """
+    results = list(_client.results(arxiv.Search(id_list=[paper_id])))
+
+    if not results:
+        return f"No paper found with ID: {paper_id}"
+
+    r = results[0]
+    authors = ", ".join(a.name for a in r.authors)
+
+    return (
+        f"Title: {r.title}\n"
+        f"Authors: {authors}\n"
+        f"Published: {r.published}\n"
+        f"PDF: {r.pdf_url}\n"
+        f"Abstract:\n{r.summary.strip()}"
+    )
+
+
 @mcp.tool()
 def ping() -> str:
     """A simple tool to check if the server is responsive."""
