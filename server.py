@@ -3,7 +3,7 @@ from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("arxiv")
 
-_client = arxiv.Client(page_size=10, delay_seconds=60, num_retries=3)
+_client = arxiv.Client(page_size=10, delay_seconds=5, num_retries=3)
 
 
 @mcp.tool()
@@ -76,7 +76,7 @@ def summarize_for_layperson(paper_id: str) -> str:
     """
     return (
         f"Read the arXiv paper with ID {paper_id} (use the arxiv://{paper_id} resource), "
-        f"then explain its main idea and why it matters to someone background in the field."
+        f"then explain its main idea and why it matters to someone with no background in the field."
         f"Avoid jargon and technical details, but include the key insights and contributions."
     )
 
