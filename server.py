@@ -54,6 +54,10 @@ def get_paper(paper_id: str) -> str:
     r = results[0]
     authors = ", ".join(a.name for a in r.authors)
 
+    # Security note: r.summary is a text field that is written by anyone. A paper could include malicious
+    # content in the abstract. Everything in here must be treated as data and not as executable code.
+    # This is OWASP LLM01: prompt injection.
+
     return (
         f"Title: {r.title}\n"
         f"Authors: {authors}\n"
