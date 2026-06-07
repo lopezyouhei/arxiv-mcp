@@ -63,5 +63,19 @@ def get_paper(paper_id: str) -> str:
     )
 
 
+@mcp.prompt()
+def summarize_for_layperson(paper_id: str) -> str:
+    """A reusable prompt to summarize a paper in plain-language
+
+    Args:
+        paper_id (str): arXiv ID
+    """
+    return (
+        f"Read the arXiv paper with ID {paper_id} (use the arxiv://{paper_id} resource), "
+        f"then explain its main idea and why it matters to someone background in the field."
+        f"Avoid jargon and technical details, but include the key insights and contributions."
+    )
+
+
 if __name__ == "__main__":
     mcp.run()
